@@ -1,10 +1,13 @@
 # Remove the line below if you want to inherit .editorconfig settings from higher directories
 root = true
 
-### From https://github.com/Microsoft/TypeScript/blob/master/.editorconfig
+[*.{ts,js}]
+quote_type = single
 
-[{src,scripts}/**.{ts,json,js}]
-end_of_line = crlf
+[*.md]
+max_line_length = 80
+
+[*.{ts,json,js,md}]
 charset = utf-8
 trim_trailing_whitespace = true
 insert_final_newline = true
@@ -24,7 +27,6 @@ indent_style = space
 tab_width = 4
 
 # New line preferences
-end_of_line = crlf
 insert_final_newline = false
 
 #### .NET Coding Conventions ####
