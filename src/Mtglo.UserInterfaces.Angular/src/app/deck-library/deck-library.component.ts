@@ -7,7 +7,7 @@ import { Component, OnInit, Output } from '@angular/core';
 })
 export class DeckLibraryComponent implements OnInit {
 
-  listOfDecks = [{deckName: 'Burn'}, {deckName: 'Affinity'}, {deckName: 'Death_and_Taxes'}, {deckName: 'Blue_is_Dumb'}, {deckName: 'Green_Dudes'}];
+  listOfDecks = [{deckName: 'Burn'}, {deckName: 'Affinity'}, {deckName: 'Death_and_Taxes'}, {deckName: 'Blue_is_Dumb'}, {deckName: 'Green_Dudes'}, {deckName: 'Red dead redemption'}];
   constructor() { }
 
   ngOnInit(): void {

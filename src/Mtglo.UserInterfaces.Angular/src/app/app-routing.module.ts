@@ -6,9 +6,13 @@ import { DeckLibraryComponent } from './deck-library/deck-library.component';
 
 
 const routes: Routes = [
-    //{ path: '', component: AppComponent },
-    { path: 'deck-library', component: DeckLibraryComponent },
-    { path: 'deck/:deckName', component: DeckComponent }
+    {
+        path: 'decks',
+        component: DeckLibraryComponent,
+        children: [
+            {path: ':deckName', component: DeckComponent }
+        ]
+    }
 ];
 
 

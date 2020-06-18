@@ -1,17 +1,9 @@
 <div class="container">
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col">
             <h1>The MTGLO Deck Listificator</h1>
-            <div class="row">
-                <div class="col-sm-12">
-                    <!-- <mtglo-deck *ngFor="let deck of decks" [deck]="deck" class="col-sm"></mtglo-deck>
-                <mtglo-deck-library></mtglo-deck-library> -->
-                    <li><a [routerLink]="['/deck-library']"> Back to Deck Library</a></li>
-                </div>
-                <div>
-                    <router-outlet></router-outlet>
-                </div>
-            </div>
         </div>
     </div>
+    <mtglo-horizontal-navigation-bar></mtglo-horizontal-navigation-bar>
+    <router-outlet></router-outlet>
 </div>

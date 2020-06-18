@@ -9,6 +9,8 @@ import { DeckComponent } from './deck/deck.component';
 import { DecklistComponent } from './decklist/decklist.component';
 import { CardComponent } from './card/card.component';
 import { DeckLibraryComponent } from './deck-library/deck-library.component';
+import { HorizontalNavigationBarComponent } from './horizontal-navigation-bar/horizontal-navigation-bar.component';
+import { CardCollectionComponent } from './card-collection/card-collection.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +18,9 @@ import { DeckLibraryComponent } from './deck-library/deck-library.component';
     DeckComponent,
     DecklistComponent,
     CardComponent,
-    DeckLibraryComponent
+    DeckLibraryComponent,
+    HorizontalNavigationBarComponent,
+    CardCollectionComponent
   ],
   imports: [
     BrowserModule,

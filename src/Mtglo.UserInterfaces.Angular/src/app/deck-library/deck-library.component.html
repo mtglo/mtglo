@@ -1,8 +1,11 @@
-<div class="container">
-    <div class="row">
-        <div class="col-sm-3">
-            <h1>Deck Library</h1>
-                <li><a [routerLink]="['/deck', deck.deckName]" *ngFor="let deck of this.listOfDecks"> {{ deck.deckName }} </a></li>
-        </div>
+<div class="row">
+    <main class="col">
+        <router-outlet></router-outlet>
+    </main>
+    <div class="col sidebar">
+        <h1>Deck Library</h1>
+        <li *ngFor="let deck of this.listOfDecks">
+            <a [routerLink]="['/decks', deck.deckName]">{{ deck.deckName }}</a>
+        </li>
     </div>
 </div>
