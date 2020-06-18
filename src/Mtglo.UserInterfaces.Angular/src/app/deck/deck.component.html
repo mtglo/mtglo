@@ -1,0 +1,23 @@
+<!-- <p>
+    <button type="button" class="btn btn-outline-primary" (click)="isCollapsed = !isCollapsed"
+            [attr.aria-expanded]="!isCollapsed" aria-controls="collapseExample">
+      {{deck.deckName}}
+    </button>
+    <title>Add Card</title>
+    <input type="text" class="form-control" [(ngModel)]="newCard">
+    <button type="button" class="btn btn-outline-primary">Add Card</button>
+  </p>
+  <div id="collapseExample" [ngbCollapse]="isCollapsed">
+    <div class="card">
+      <div class="card-body">
+        <li *ngFor="let card of deck.deckList">
+            <b> {{card.cardName}} x {{card.cardQuantity}} </b>    
+         </li>
+      </div>
+    </div>
+  </div> -->
+
+<div>
+    <p>Deck with name {{this.currentDeckList.deckName}} loaded</p>
+    <p>Deck contains: {{this.currentDeckList.deckList}}</p>
+</div>
