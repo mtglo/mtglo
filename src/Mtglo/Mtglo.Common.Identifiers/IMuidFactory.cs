@@ -17,7 +17,7 @@ namespace Mtglo.Common.Identifiers
         /// operation may infrequently need to wait a short time to ensure uniqueness
         /// (typically 1 ms).
         /// </summary>
-        /// <param name="ct">Token that can be used to cancel the operation.</param>
+        /// <param name="cancellationToken">Token that can be used to cancel the operation.</param>
         /// <returns>A new MUID, encoded.</returns>
         /// <exception cref="InvalidOperationException">
         /// Throws when the current system
@@ -28,7 +28,7 @@ namespace Mtglo.Common.Identifiers
         /// Thrown when the operation attempts to wait
         /// longer than the configured MuidTimeout in <seealso cref="IdentifierOptions" />.
         /// </exception>
-        Task<long> GenerateMuidAsync(CancellationToken ct);
+        Task<long> GenerateMuidAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Generates an encoded <seealso cref="Muid" />, unique to this node and
@@ -44,7 +44,7 @@ namespace Mtglo.Common.Identifiers
         /// A MUID whose timestamp should occur before the new MUID
         /// being generated.
         /// </param>
-        /// <param name="ct">Token that can be used to cancel the operation.</param>
+        /// <param name="cancellationToken">Token that can be used to cancel the operation.</param>
         /// <returns>A new (encoded) MUID whose timestamp is after the one provided.</returns>
         /// <exception cref="InvalidOperationException">
         /// Throws when the current system
@@ -55,10 +55,10 @@ namespace Mtglo.Common.Identifiers
         /// Thrown when the operation attempts to wait
         /// longer than the configured MuidTimeout in <seealso cref="IdentifierOptions" />.
         /// </exception>
-        Task<long> GenerateMuidAsync(long afterMuid, CancellationToken ct);
+        Task<long> GenerateMuidAsync(long afterMuid, CancellationToken cancellationToken);
 
         /// <inheritdoc cref="GenerateMuidAsync(long, CancellationToken)" />
-        Task<long> GenerateMuidAsync(Muid afterMuid, CancellationToken ct);
+        Task<long> GenerateMuidAsync(Muid afterMuid, CancellationToken cancellationToken);
 
         /// <summary>
         /// Generates an encoded <seealso cref="Muid" />, unique to this node and
@@ -72,9 +72,9 @@ namespace Mtglo.Common.Identifiers
         /// A timestamp that should occur before the new MUID
         /// being generated.
         /// </param>
-        /// <param name="ct">Token that can be used to cancel the operation.</param>
+        /// <param name="cancellationToken">Token that can be used to cancel the operation.</param>
         /// <inheritdoc cref="GenerateMuidAsync(long, CancellationToken)" />
-        Task<long> GenerateMuidAsync(DateTimeOffset afterTimestamp, CancellationToken ct);
+        Task<long> GenerateMuidAsync(DateTimeOffset afterTimestamp, CancellationToken cancellationToken);
 
         /// <summary>Decodes a provided long to the object representation of a MUID.</summary>
         /// <param name="encodedMuid">An encoded MUID to be decoded.</param>
