@@ -1,7 +1,6 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using JetBrains.Annotations;
 
 namespace Mtglo.Common.Identifiers
 {
@@ -10,7 +9,6 @@ namespace Mtglo.Common.Identifiers
     /// guaranteed to be unique for a given node, as configured in
     /// <seealso cref="IdentifierOptions" />.
     /// </summary>
-    [PublicAPI]
     public interface IMuidFactory
     {
         /// <summary>

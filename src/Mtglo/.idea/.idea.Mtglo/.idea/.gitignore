@@ -2,7 +2,7 @@
 /shelf/
 /workspace.xml
 # Rider ignored files
-/contentModel.xml
-/.idea.Mtglo.Common.Identifiers.iml
 /modules.xml
+/.idea.Mtglo.iml
 /projectSettingsUpdater.xml
+/contentModel.xml

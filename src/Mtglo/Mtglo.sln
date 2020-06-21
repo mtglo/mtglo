@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mtglo.Common.Identifiers", "Mtglo.Common.Identifiers\Mtglo.Common.Identifiers.csproj", "{8DF4C93E-A1CB-42F0-84CD-647A85755617}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mtglo.Common.Abstractions", "Mtglo.Common.Abstractions\Mtglo.Common.Abstractions.csproj", "{73CC5844-B150-4158-868E-A20CE9A0BC7E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8DF4C93E-A1CB-42F0-84CD-647A85755617}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DF4C93E-A1CB-42F0-84CD-647A85755617}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DF4C93E-A1CB-42F0-84CD-647A85755617}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DF4C93E-A1CB-42F0-84CD-647A85755617}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73CC5844-B150-4158-868E-A20CE9A0BC7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73CC5844-B150-4158-868E-A20CE9A0BC7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73CC5844-B150-4158-868E-A20CE9A0BC7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73CC5844-B150-4158-868E-A20CE9A0BC7E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

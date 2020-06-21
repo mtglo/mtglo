@@ -1,10 +1,8 @@
 using System;
-using JetBrains.Annotations;
 
 namespace Mtglo.Common.Identifiers
 {
     /// <summary>MTGLO Universal Identifier.</summary>
-    [PublicAPI]
     public class Muid
     {
         /// <summary>
@@ -43,6 +41,6 @@ namespace Mtglo.Common.Identifiers
         public DateTimeOffset Timestamp => DateTimeOffset.FromUnixTimeMilliseconds(EpochTimeStamp);
 
         /// <summary>Gets the encoded value of the MUID.</summary>
-        public long EncodedValue { get; private set; }
+        public long EncodedValue { get; }
     }
 }

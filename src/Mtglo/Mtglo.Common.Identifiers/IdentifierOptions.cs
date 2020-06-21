@@ -1,10 +1,8 @@
-﻿using System;
-using JetBrains.Annotations;
+using System;
 
 namespace Mtglo.Common.Identifiers
 {
     /// <summary>Configuration options of MTGLO identifiers.</summary>
-    [PublicAPI]
     public class IdentifierOptions
     {
         /// <summary>

@@ -2,27 +2,25 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
+    <CodeAnalysisRuleSet>../../../.mtglo.ruleset</CodeAnalysisRuleSet>
     <Nullable>enable</Nullable>
     <PackageVersion>0.1.0</PackageVersion>
     <Title>MTGLO Identifiers</Title>
-    <Authors />
+    <Authors>MTGLO</Authors>
     <Description>Creates and decodes identifiers suitable for use in the MTGLO system.</Description>
-    <Copyright>2020 MTGLO</Copyright>
-    <PackageProjectUrl>https://github.com/mtglo/mtglo</PackageProjectUrl>
+    <Copyright>(c) 2020 MTGLO</Copyright>
+    <PackageProjectUrl>https://mtglo.github.io/mtglo/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/mtglo/mtglo</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <Company>MTGLO</Company>
-    <CodeAnalysisRuleSet>../../../.mtglo.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DocumentationFile>bin\Debug\Mtglo.Common.Identifiers.xml</DocumentationFile>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <DocumentationFile>bin\Release\Mtglo.Common.Identifiers.xml</DocumentationFile>
-    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
 
   <ItemGroup>
@@ -31,6 +29,9 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.5" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.5" />
     <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.164" />
+  </ItemGroup>
+
+  <ItemGroup>
     <AdditionalFiles Include="../../../.stylecop.json" Link="stylecop.json" />
     <AdditionalFiles Include="../../../.mtglo.ruleset" />
     <AdditionalFiles Include="../../../.editorconfig" />
