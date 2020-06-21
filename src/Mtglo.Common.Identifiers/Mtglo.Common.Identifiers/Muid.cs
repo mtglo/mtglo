@@ -1,43 +1,48 @@
 using System;
+using JetBrains.Annotations;
 
 namespace Mtglo.Common.Identifiers
 {
-    /// <summary>
-    /// MTGLO Universal Identifier.
-    /// </summary>
+    /// <summary>MTGLO Universal Identifier.</summary>
+    [PublicAPI]
     public class Muid
     {
         /// <summary>
-        /// What version Muid this is.
+        /// Initializes a new instance of the <see cref="Muid" /> class by
+        /// decoding the provided encoded value.
         /// </summary>
+        /// <param name="encodedMuid">An encoded MUID.</param>
+        /// <exception cref="FormatException">
+        /// Thrown if the provided number does not
+        /// conform to a known MUID format.
+        /// </exception>
+        public Muid(long encodedMuid)
+        {
+            EncodedValue = encodedMuid;
+        }
+
+        /// <summary>Gets or sets the version of the MUID.</summary>
         public int Version { get; set; }
 
         /// <summary>
-        /// The number of milliseconds since the Unix Epoch.
+        /// Gets or sets the number of milliseconds since the Unix Epoch of the
+        /// MUID.
         /// </summary>
-        public long EpochTime { get; set; }
+        public long EpochTimeStamp { get; set; }
 
-        /// <summary>
-        /// The node identifier this id is associated with.
-        /// </summary>
+        /// <summary>Gets or sets the node identifier the MUID is associated with.</summary>
         public int NodeId { get; set; }
 
-        /// <summary>
-        /// The sequence identifier for this identifier.
-        /// </summary>
+        /// <summary>Gets or sets the sequence identifier of the MUID.</summary>
         public int SequenceId { get; set; }
-        
-        /// <summary>
-        /// The timestamp for this identifier as a DateTimeOffset, derived from <see cref="EpochTime"/>.
-        /// </summary>
-        public DateTimeOffset Timestamp
-        {
-            get
-            {
-                return _timestamp ?? (_timestamp = DateTimeOffset.FromUnixTimeMilliseconds(EpochTime)).Value;
-            }
-        }
 
-        private DateTimeOffset? _timestamp;
+        /// <summary>
+        /// Gets the timestamp for this identifier as a
+        /// <seealso cref="DateTimeOffset" />, derived from <see cref="EpochTimeStamp" />.
+        /// </summary>
+        public DateTimeOffset Timestamp => DateTimeOffset.FromUnixTimeMilliseconds(EpochTimeStamp);
+
+        /// <summary>Gets the encoded value of the MUID.</summary>
+        public long EncodedValue { get; private set; }
     }
 }

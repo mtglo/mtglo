@@ -1,23 +1,28 @@
 ﻿using System;
+using JetBrains.Annotations;
 
 namespace Mtglo.Common.Identifiers
 {
-    /// <summary>
-    /// Configuration options of MTGLO identifiers.
-    /// </summary>
+    /// <summary>Configuration options of MTGLO identifiers.</summary>
+    [PublicAPI]
     public class IdentifierOptions
     {
         /// <summary>
-        /// A identifier assigned to this node. This should be assigned so that it is unique while it is being used,
-        /// though re-use of a node id is acceptable.
+        /// Gets or sets a identifier assigned to this node (these identifiers
+        /// must be managed externally). This should be assigned so that it is unique while
+        /// this node is active, though re-use of a particular node id is acceptable. See
+        /// system documents for valid range of values (it may differ by
+        /// <see cref="MuidVersion" />).
         /// </summary>
         public int NodeId { get; set; }
 
-        /// <summary>
-        /// Whether or not to allow multiple instances of the <see cref="MuidService"/>. This should generally
-        /// only be true to facilitate unit testing as it is intended to be used as a singleton. 
-        /// </summary>
-        public bool AllowMultipleInstances { get; set; } = false;
+        /// <summary>Gets or sets asd.</summary>
+        public int MuidVersion { get; set; }
 
+        /// <summary>
+        /// Gets or sets maximum amount of time (in milliseconds) generating a
+        /// MUID is allowed to take before throwing a <seealso cref="TimeoutException" />.
+        /// </summary>
+        public int MuidTimeoutMilliseconds { get; set; }
     }
 }

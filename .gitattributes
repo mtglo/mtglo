@@ -5,8 +5,6 @@
 # Set default behaviour to automatically normalize line endings.
 * text=auto
 
-*.json text
-
 ###############################
 # Git Large File System (LFS) #
 ###############################
