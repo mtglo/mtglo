@@ -37,4 +37,8 @@
     <AdditionalFiles Include="../../../.editorconfig" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Mtglo.Common.Abstractions\Mtglo.Common.Abstractions.csproj" />
+  </ItemGroup>
+
 </Project>

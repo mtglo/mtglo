@@ -14,9 +14,10 @@ namespace Mtglo.Common.Identifiers
         /// Thrown if the provided number does not
         /// conform to a known MUID format.
         /// </exception>
-        public Muid(long encodedMuid)
+        internal Muid(long encodedMuid)
         {
             EncodedValue = encodedMuid;
+            throw new NotImplementedException();
         }
 
         /// <summary>Gets or sets the version of the MUID.</summary>

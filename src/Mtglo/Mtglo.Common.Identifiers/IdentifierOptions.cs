@@ -2,6 +2,8 @@ using System;
 
 namespace Mtglo.Common.Identifiers
 {
+    // TODO validate provided values
+
     /// <summary>Configuration options of MTGLO identifiers.</summary>
     public class IdentifierOptions
     {
@@ -14,7 +16,6 @@ namespace Mtglo.Common.Identifiers
         /// </summary>
         public int NodeId { get; set; }
 
-        /// <summary>Gets or sets asd.</summary>
         public int MuidVersion { get; set; }
 
         /// <summary>
@@ -22,5 +23,18 @@ namespace Mtglo.Common.Identifiers
         /// MUID is allowed to take before throwing a <seealso cref="TimeoutException" />.
         /// </summary>
         public int MuidTimeoutMilliseconds { get; set; }
+
+        public int MuidVersionBits { get; set; }
+
+        public int TimestampBits { get; set; }
+
+        public int NodeIdBits { get; set; }
+
+        public int SequenceIdBits { get; set; }
+
+        public IdentifierOptions Clone()
+        {
+            return (IdentifierOptions)MemberwiseClone();
+        }
     }
 }
