@@ -1,6 +1,9 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Subscriber, Subscription } from 'rxjs';
+import { ActivatedRoute, Params } from '@angular/router';
+import { Subscription, of } from 'rxjs';
+import { switchMap, map } from 'rxjs/operators';
+import { DeckService, Deck } from '../deck.service';
+import { FormControl } from '@angular/forms';
 
 @Component({
     selector: 'mtglo-deck',
@@ -9,29 +12,26 @@ import { Subscriber, Subscription } from 'rxjs';
 })
 export class DeckComponent implements OnInit, OnDestroy {
 
-    deck: {deckName: string};
-    newCard = '';
-    currentDeckList: { deckName: string, deckList: string;}
-
-    constructor(private route: ActivatedRoute) {
+    
+    constructor(private route: ActivatedRoute, private deckservice: DeckService) {
     }
-
+    
     // @Input('deck') deck: { deckName: string, deckList: [{ cardName: string, cardQuantity: number }] };
-
-    listOfDecks = [{ deckName: 'Burn', deckList: 'cards 1'}, { deckName: 'Affinity', deckList: 'cards 2' }, { deckName: 'Death_and_Taxes', deckList: 'cards 3' }, { deckName: 'Blue_is_Dumb', deckList: 'cards 4' }, { deckName: 'Green_Dudes', deckList: 'cards 5' }];
+    
+    deck: Deck;
+    newCard = '';
     subscription: Subscription;
 
     public isCollapsed = false;
 
     ngOnInit(){
-        
-        this.subscription = this.route.params.subscribe(params => {
-            this.deck = {
-                deckName: params['deckName']
-            };
-            this.currentDeckList = this.listOfDecks.find(element => element.deckName == this.deck.deckName);
+        this.subscription = this.route.params.pipe(switchMap( (p: Params) => 
+            this.deckservice.decks.pipe(map((decks: Deck[]) => 
+                decks.filter(d => d.name === p['deckName'])[0]))
+        ))
+        .subscribe(deck => {
+            this.deck = deck;
         });
-        
     }
 
     ngOnDestroy(){

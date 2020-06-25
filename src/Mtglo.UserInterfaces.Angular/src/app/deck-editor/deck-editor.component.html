@@ -1,0 +1,22 @@
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-10 col-md-8 col-sm-offset-1 col-md-offset-2">
+            <form [formGroup]="cardForm" (ngSubmit)="OnSubmit()">
+                <div class="form-group">
+                    <label for="cardName">Card Name</label>
+                    <input type="text" id="cardName" formControlName="cardName" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="quantity">Quantity</label>
+                    <input type="number" id="quantity" formControlName="quantity" class="form-control" max="4" min="1">
+                </div>
+                    <label for="edition">Edition</label>
+                    <select class="form-group" formControlName="edition">
+                        <option value="" selected>Choose your edtion</option>
+                        <option *ngFor="let edition of editions">{{edition}}</option>
+                     </select>
+                <button class="btn btn-primary" type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>

@@ -11,6 +11,4 @@ import { DeckLibraryComponent } from './deck-library/deck-library.component'
 })
 export class AppComponent {
     title = 'mtglo';
-    deckList = [{ cardName: 'Land', cardQuantity: 23 }, { cardName: 'Lightning Bolt', cardQuantity: 4 }, { cardName: 'Carmaggedon', cardQuantity: 4 }, { cardName: 'Demonic Puter', cardQuantity: 4 }]
-    decks = [{ deckName: 'Burn', deckList: this.deckList }, { deckName: 'Affinity', deckList: this.deckList }];
 }

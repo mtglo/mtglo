@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -11,6 +11,7 @@ import { CardComponent } from './card/card.component';
 import { DeckLibraryComponent } from './deck-library/deck-library.component';
 import { HorizontalNavigationBarComponent } from './horizontal-navigation-bar/horizontal-navigation-bar.component';
 import { CardCollectionComponent } from './card-collection/card-collection.component';
+import { DeckEditorComponent } from './deck-editor/deck-editor.component';
 
 @NgModule({
   declarations: [
@@ -20,12 +21,14 @@ import { CardCollectionComponent } from './card-collection/card-collection.compo
     CardComponent,
     DeckLibraryComponent,
     HorizontalNavigationBarComponent,
-    CardCollectionComponent
+    CardCollectionComponent,
+    DeckEditorComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NgbModule,
+    ReactiveFormsModule,
     FormsModule
   ],
   providers: [],

@@ -1,4 +1,7 @@
 <div>
-    <p>Deck with name {{this.currentDeckList.deckName}} loaded</p>
-    <p>Deck contains: {{this.currentDeckList.deckList}}</p>
+    <p>Deck with name {{deck.name}} loaded</p>
+    <li *ngFor="let card of deck.deckList">
+        {{card.cardName}} x {{card.quantity}}
+    </li>
+    <mtglo-deck-editor></mtglo-deck-editor>
 </div>

@@ -4,8 +4,8 @@
     </main>
     <div class="col sidebar">
         <h1>Deck Library</h1>
-        <li *ngFor="let deck of this.listOfDecks">
-            <a [routerLink]="['/decks', deck.deckName]">{{ deck.deckName }}</a>
+        <li *ngFor="let deck of this.decks">
+            <a [routerLink]="['/decks', deck.name]">{{ deck.name }}</a>
         </li>
     </div>
 </div>

@@ -1,16 +1,27 @@
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { DeckService, Deck } from '../deck.service';
+import { Subscription } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'mtglo-deck-library',
-  templateUrl: './deck-library.component.html',
-  styleUrls: ['./deck-library.component.css']
+    selector: 'mtglo-deck-library',
+    templateUrl: './deck-library.component.html',
+    styleUrls: ['./deck-library.component.css']
 })
-export class DeckLibraryComponent implements OnInit {
+export class DeckLibraryComponent implements OnInit, OnDestroy {
 
-  listOfDecks = [{deckName: 'Burn'}, {deckName: 'Affinity'}, {deckName: 'Death_and_Taxes'}, {deckName: 'Blue_is_Dumb'}, {deckName: 'Green_Dudes'}, {deckName: 'Red dead redemption'}];
-  constructor() { }
+    constructor(private deckService: DeckService) { }
 
-  ngOnInit(): void {
-  }
+    decks: Deck[];
+    decksSubscription: Subscription;
+
+    ngOnInit(): void {
+        this.decksSubscription = this.deckService.decks.subscribe(decks => this.decks = decks);
+    }
+
+    ngOnDestroy() {
+        this.decksSubscription.unsubscribe();
+    }
+
 
 }
