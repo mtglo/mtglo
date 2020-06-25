@@ -3,5 +3,12 @@
     <li *ngFor="let card of deck.deckList">
         {{card.cardName}} x {{card.quantity}}
     </li>
-    <mtglo-deck-editor></mtglo-deck-editor>
+</div>
+<p></p>
+<div>
+    <button class="btn btn-warning" *ngIf="!editingDeck;else elseBlock" (click)="editingDeck=!editingDeck">
+        Edit Deck</button>
+    <ng-template #elseBlock>
+        <mtglo-deck-editor></mtglo-deck-editor>
+    </ng-template>
 </div>

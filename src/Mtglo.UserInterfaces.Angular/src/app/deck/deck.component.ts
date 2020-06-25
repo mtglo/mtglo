@@ -21,6 +21,7 @@ export class DeckComponent implements OnInit, OnDestroy {
     deck: Deck;
     newCard = '';
     subscription: Subscription;
+    editingDeck= false;
 
     public isCollapsed = false;
 
@@ -31,7 +32,9 @@ export class DeckComponent implements OnInit, OnDestroy {
         ))
         .subscribe(deck => {
             this.deck = deck;
+            console.log(this.route);
         });
+        
     }
 
     ngOnDestroy(){
