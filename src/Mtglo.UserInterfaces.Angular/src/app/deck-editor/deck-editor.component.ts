@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormsModule, NgForm, FormGroup, FormControl, Validators, FormArray } from '@angular/forms'
 
 @Component({
@@ -13,8 +13,11 @@ export class DeckEditorComponent implements OnInit {
     editions = ['Alpha', 'Beta', 'Unlimited', 'Revised', 'The Dark', 'Legends'];
     cardsToBeAdded: string[];
     forbiddenCards = ['counterspell'];
+    card: {cardName: string, quantity: number};
 
     constructor() { }
+
+    @Input() public onSubmitCard: (card: {cardName: string, quantity: number}) => void;
 
     ngOnInit(): void {
         this.cardForm = new FormGroup({
@@ -26,7 +29,8 @@ export class DeckEditorComponent implements OnInit {
     }
 
     OnSubmit() {
-        console.log(this.cardForm);
+        this.card = {cardName: this.cardForm.value['cardName'], quantity: this.cardForm.value['quantity']};
+        this.onSubmitCard(this.card);
     }
 
     ForbiddenCards(control: FormControl): {[s: string]: boolean} {

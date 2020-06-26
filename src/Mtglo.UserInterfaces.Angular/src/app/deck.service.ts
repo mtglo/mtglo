@@ -32,7 +32,12 @@ export class DeckService {
     private decksDB: Deck[];
     decks: Observable<Deck[]>;
 
-    GetDeck(deckName: 'string'): Deck {
+    GetDeck(deckName: string): Deck {
         return this.decksDB.filter(deck => deck.name === deckName)[0];
+    }
+
+    AddCard(deckName: string, card: {cardName: string, quantity: number}) {
+        this.GetDeck(deckName).deckList = this.GetDeck(deckName).deckList.concat(card);
+        console.log(this.GetDeck(deckName).deckList.concat(card));
     }
 }

@@ -9,6 +9,6 @@
     <button class="btn btn-warning" *ngIf="!editingDeck;else elseBlock" (click)="editingDeck=!editingDeck">
         Edit Deck</button>
     <ng-template #elseBlock>
-        <mtglo-deck-editor></mtglo-deck-editor>
+        <mtglo-deck-editor [onSubmitCard]="this.onSavedDeck"></mtglo-deck-editor>
     </ng-template>
 </div>
