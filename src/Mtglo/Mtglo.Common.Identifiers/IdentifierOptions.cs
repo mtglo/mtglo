@@ -32,6 +32,8 @@ namespace Mtglo.Common.Identifiers
 
         public int SequenceIdBits { get; set; }
 
+        public long EpochOffset { get; set; }
+
         public IdentifierOptions Clone()
         {
             return (IdentifierOptions)MemberwiseClone();

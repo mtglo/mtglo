@@ -20,15 +20,15 @@ namespace Mtglo.Common.Identifiers
         /// <param name="cancellationToken">Token that can be used to cancel the operation.</param>
         /// <returns>A new MUID, encoded.</returns>
         /// <exception cref="InvalidOperationException">
-        /// Throws when the current system
-        /// timestamp cannot be encoded into the MUID. This may happen if the timestamp is
-        /// outside the valid range for the MUID version.
+        /// Throws when the current system timestamp cannot be encoded into the MUID.
+        /// This may happen if the timestamp is outside the valid range for
+        /// the MUID version.
         /// </exception>
         /// <exception cref="TimeoutException">
-        /// Thrown when the operation attempts to wait
-        /// longer than the configured MuidTimeout in <seealso cref="IdentifierOptions" />.
+        /// Thrown when the operation takes longer than the configured
+        /// MuidTimeout in <seealso cref="IdentifierOptions" />.
         /// </exception>
-        Task<long> GenerateMuidAsync(CancellationToken cancellationToken);
+        ValueTask<long> GenerateMuidAsync(CancellationToken cancellationToken);
 
         /// <summary>
         /// Generates an encoded <seealso cref="Muid" />, unique to this node and
@@ -74,7 +74,10 @@ namespace Mtglo.Common.Identifiers
         /// </param>
         /// <param name="cancellationToken">Token that can be used to cancel the operation.</param>
         /// <inheritdoc cref="GenerateMuidAsync(long, CancellationToken)" />
-        Task<long> GenerateMuidAsync(DateTimeOffset afterTimestamp, CancellationToken cancellationToken);
+        Task<long> GenerateMuidAfterTimestampAsync(DateTimeOffset afterTimestamp, CancellationToken cancellationToken);
+
+        /// <inheritdoc cref="GenerateMuidAfterTimestampAsync(DateTimeOffset, CancellationToken)"/>
+        Task<long> GenerateMuidAfterTimestampAsync(long afterTimestamp, CancellationToken cancellationToken);
 
         /// <summary>Decodes a provided long to the object representation of a MUID.</summary>
         /// <param name="encodedMuid">An encoded MUID to be decoded.</param>

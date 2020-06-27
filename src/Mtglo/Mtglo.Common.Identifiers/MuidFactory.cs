@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Concurrent;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Mtglo.Common.Abstractions;
+using static System.Threading.Tasks.TaskContinuationOptions;
 
 namespace Mtglo.Common.Identifiers
 {
@@ -16,7 +16,7 @@ namespace Mtglo.Common.Identifiers
         private readonly ILogger<MuidFactory> _logger;
         private readonly IdentifierOptions _options;
 
-        private readonly BlockingCollection<int> _sequenceIds;
+        private readonly ConcurrentQueue<int> _sequenceIds;
         private readonly SemaphoreSlim _syncRoot;
 
         /// <summary>Initializes a new instance of the <see cref="MuidFactory" /> class.</summary>
@@ -28,80 +28,76 @@ namespace Mtglo.Common.Identifiers
             ISystemClock clock,
             ILogger<MuidFactory> logger)
         {
-            _options = options?.Value ?? throw new ArgumentNullException(nameof(options));
+            _options = options?.Value.Clone() ?? throw new ArgumentNullException(nameof(options));
             _clock = clock ?? throw new ArgumentNullException(nameof(clock));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
-            _sequenceIds = new BlockingCollection<int>();
+            _sequenceIds = new ConcurrentQueue<int>();
             _syncRoot = new SemaphoreSlim(1, 1);
-            _ = GenerateSequenceIds(0, CancellationToken.None).FailFastOnExceptions();
         }
 
         /// <inheritdoc />
-        public Task<long> GenerateMuidAsync(CancellationToken cancellationToken)
+        public async ValueTask<long> GenerateMuidAsync(CancellationToken cancellationToken)
         {
-            if (_sequenceIds.Count == 0)
-            {
-                _ = GenerateSequenceIds(_clock.UnixTimeMilliseconds, CancellationToken.None).FailFastOnExceptions();
-            }
+            var start = _clock.UnixTimeMilliseconds;
+            int sequenceId;
 
-            var options = _options.Clone();
-
-            var firstWaitTime = options.MuidTimeoutMilliseconds / 2;
-            var secondWaitTime = options.MuidTimeoutMilliseconds - firstWaitTime;
-
-            cancellationToken.ThrowIfCancellationRequested();
-            if (!_sequenceIds.TryTake(out var sequenceId, firstWaitTime, cancellationToken))
+            while (!_sequenceIds.TryDequeue(out sequenceId))
             {
                 cancellationToken.ThrowIfCancellationRequested();
-                if (secondWaitTime > 0)
+
+                if (_clock.UnixTimeMilliseconds > start + _options.MuidTimeoutMilliseconds)
                 {
-                    _ = GenerateSequenceIds(_clock.UnixTimeMilliseconds, CancellationToken.None).FailFastOnExceptions();
+                    throw new TimeoutException($"Could not get a sequence id within {_options.MuidTimeoutMilliseconds}ms");
                 }
 
-                if (secondWaitTime == 0 || !_sequenceIds.TryTake(out sequenceId, options.MuidTimeoutMilliseconds / 2, cancellationToken))
-                {
-                    throw new TimeoutException();
-                }
+                _ = GenerateSequenceIds(_clock.UnixTimeMilliseconds, CancellationToken.None).ContinueWith(
+                    t => Environment.FailFast("Task faulted", t.Exception),
+                    CancellationToken.None,
+                    OnlyOnFaulted | ExecuteSynchronously | DenyChildAttach,
+                    TaskScheduler.Current);
+
+                await Task.Delay(1, cancellationToken).ConfigureAwait(false);
             }
 
-            var now = _clock.UnixTimeMilliseconds;
+            var timestamp = _clock.UnixTimeMilliseconds - _options.EpochOffset;
 
-            long id = options.MuidVersion << (options.TimestampBits + options.NodeIdBits + options.SequenceIdBits);
-            id |= now << (options.NodeIdBits + options.SequenceIdBits);
-            id |= (uint)_options.NodeId << options.SequenceIdBits;
+            long id = _options.MuidVersion << (_options.TimestampBits + _options.NodeIdBits + _options.SequenceIdBits);
+            id |= timestamp << (_options.NodeIdBits + _options.SequenceIdBits);
+            id |= (uint)_options.NodeId << _options.SequenceIdBits;
             id |= (uint)sequenceId;
 
-            return Task.FromResult(id);
+            return id;
         }
 
         /// <inheritdoc />
         public Task<long> GenerateMuidAsync(long afterMuid, CancellationToken cancellationToken)
         {
-            var muid = new Muid(afterMuid);
+            var muid = DecodeMuid(afterMuid);
             return GenerateMuidAsync(muid, cancellationToken);
         }
 
         /// <inheritdoc />
         public Task<long> GenerateMuidAsync(Muid afterMuid, CancellationToken cancellationToken)
         {
-            var afterTimestamp = afterMuid?.EpochTimeStamp ?? throw new ArgumentNullException(nameof(afterMuid));
+            var afterTimestamp = afterMuid?.EpochTimeStamp + _options.EpochOffset ?? throw new ArgumentNullException(nameof(afterMuid));
             return GenerateMuidAfterTimestampAsync(afterTimestamp, cancellationToken);
         }
 
         /// <inheritdoc />
-        public Task<long> GenerateMuidAsync(DateTimeOffset afterTimestamp, CancellationToken cancellationToken)
+        public Task<long> GenerateMuidAfterTimestampAsync(DateTimeOffset afterTimestamp, CancellationToken cancellationToken)
         {
             return GenerateMuidAfterTimestampAsync(afterTimestamp.ToUnixTimeMilliseconds(), cancellationToken);
         }
 
-        private async Task<long> GenerateMuidAfterTimestampAsync(long afterTimestamp, CancellationToken cancellationToken)
+        /// <inheritdoc />
+        public async Task<long> GenerateMuidAfterTimestampAsync(long afterTimestamp, CancellationToken cancellationToken)
         {
             while (_clock.UnixTimeMilliseconds <= afterTimestamp)
             {
                 cancellationToken.ThrowIfCancellationRequested();
                 var delay = afterTimestamp - _clock.UnixTimeMilliseconds;
-                await Task.Delay((int)(delay <= int.MaxValue ? delay : int.MaxValue) + 1).ConfigureAwait(false);
+                await Task.Delay((int)(delay <= int.MaxValue ? delay + 1 : int.MaxValue)).ConfigureAwait(false);
             }
 
             return await GenerateMuidAsync(cancellationToken).ConfigureAwait(false);
@@ -128,7 +124,6 @@ namespace Mtglo.Common.Identifiers
                 return;
             }
 
-            _sequenceIds.Dispose();
             _syncRoot.Dispose();
         }
 
@@ -137,36 +132,24 @@ namespace Mtglo.Common.Identifiers
             await _syncRoot.WaitAsync(cancellationToken).ConfigureAwait(false);
             try
             {
-                if (_sequenceIds.Any())
+                if (!_sequenceIds.IsEmpty)
                 {
                     return;
                 }
 
-                var options = _options.Clone();
-
                 while (_clock.UnixTimeMilliseconds <= afterTimestamp)
                 {
-                    await Task.Delay(1).ConfigureAwait(false);
+                    await Task.Delay(1, cancellationToken).ConfigureAwait(false);
                 }
 
-                for (var i = 0; i < (2 ^ options.SequenceIdBits); i++)
+                for (var i = 0; i < (2 ^ _options.SequenceIdBits); i++)
                 {
-                    _sequenceIds.Add(i, cancellationToken);
+                    _sequenceIds.Enqueue(i);
                 }
             }
             finally
             {
-                _syncRoot.Release();
-            }
-        }
-
-        private async Task WaitUntilAfter(long afterTimestamp, CancellationToken cancellationToken)
-        {
-            while (_clock.UnixTimeMilliseconds <= afterTimestamp)
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-                var delay = afterTimestamp - _clock.UnixTimeMilliseconds;
-                await Task.Delay((int)(delay <= int.MaxValue ? delay : int.MaxValue)).ConfigureAwait(false);
+                _ = _syncRoot.Release();
             }
         }
     }
