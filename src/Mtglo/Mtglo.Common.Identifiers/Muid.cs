@@ -2,6 +2,8 @@ using System;
 
 namespace Mtglo.Common.Identifiers
 {
+    // TODO support versions
+
     /// <summary>MTGLO Universal Identifier.</summary>
     public class Muid
     {
