@@ -1,0 +1,55 @@
+[
+    {
+        "name": "Burn",
+        "deckList": [
+            {
+                "cardName": "land",
+                "quantity": 23
+            },
+            {
+                "cardName": "lightning bolt",
+                "quantity": 4
+            }
+        ]
+    },
+    {
+        "name": "Affinity",
+        "deckList": [
+            {
+                "cardName": "ornithopter",
+                "quantity": 4
+            },
+            {
+                "cardName": "lightning bolt",
+                "quantity": 4
+            }
+        ]
+    },
+    {
+        "name": "Death_and_Taxes",
+        "deckList": [
+            {
+                "cardName": "lightning bolt",
+                "quantity": 4
+            }
+        ]
+    },
+    {
+        "name": "Blue_is_Dumb",
+        "deckList": [
+            {
+                "cardName": "lightning bolt",
+                "quantity": 4
+            }
+        ]
+    },
+    {
+        "name": "Green_Dudes",
+        "deckList": [
+            {
+                "cardName": "lightning bolt",
+                "quantity": 4
+            }
+        ]
+    }
+]

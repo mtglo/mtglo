@@ -35,10 +35,13 @@ export class DeckComponent implements OnInit, OnDestroy {
         .subscribe(deck => {
             this.deck = deck;
             console.log(this.route);
+            this.deckservice.SaveDeck(this.deck);
         });
         this.onSavedDeck = (card: {cardName: string, quantity: number}) => {
             return this.deckservice.AddCard(this.deck.name, card);
         };
+        console.log(this.deckservice.FetchDeck());
+
     }
 
     ngOnDestroy(){

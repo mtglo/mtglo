@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subscriber, from } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { nextTick } from 'process';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 
 export type Deck = {
     name: string;
@@ -17,7 +19,7 @@ export type CardEntry = {
 })
 export class DeckService {
 
-    constructor() {
+    constructor(private http: HttpClient) {
         this.decksDB = [
             { name: 'Burn', deckList: [{ cardName: 'land', quantity: 23 }, { cardName: 'lightning bolt', quantity: 4 }] },
             { name: 'Affinity', deckList: [{ cardName: 'ornithopter', quantity: 4 }, { cardName: 'lightning bolt', quantity: 4 }] },
@@ -27,10 +29,12 @@ export class DeckService {
         ];
 
         this.decks = from([this.decksDB])
+    
     }
 
     private decksDB: Deck[];
     decks: Observable<Deck[]>;
+
 
     GetDeck(deckName: string): Deck {
         return this.decksDB.filter(deck => deck.name === deckName)[0];
@@ -38,6 +42,32 @@ export class DeckService {
 
     AddCard(deckName: string, card: {cardName: string, quantity: number}) {
         this.GetDeck(deckName).deckList = this.GetDeck(deckName).deckList.concat(card);
-        console.log(this.GetDeck(deckName).deckList.concat(card));
+    }
+
+    SaveDeck(deck)
+    {
+        this.http.post<{ name: string }>(
+            'https://ng-complete-guide-d3ecb.firebaseio.com/decks.json'
+            , deck).subscribe(deck => {
+                console.log(deck)
+            });
+    }
+
+    FetchDeck()
+    {
+        this.http.get<{ [key: string]: Deck }>(
+            'https://ng-complete-guide-d3ecb.firebaseio.com/decks.json')
+            .pipe(map(responseData => {
+                const postsArray =[];
+                for (const key in responseData) {
+                    if(responseData.hasOwnProperty(key)) {
+                        postsArray.push({ ...responseData[key], id: key});
+                    }
+                }
+                return postsArray
+            }))
+            .subscribe(decks => {
+              console.log(decks);
+            });
     }
 }
