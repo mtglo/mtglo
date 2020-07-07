@@ -1,10 +1,11 @@
+import { Card } from './card.model';
+
 export interface Deck {
     name: string;
-    decklist: [
+    [deckList: number]:
         {
-            cardName: string;
+            card: Card;
             quantity: number;
         }
-    ]
     id?: string;
 }

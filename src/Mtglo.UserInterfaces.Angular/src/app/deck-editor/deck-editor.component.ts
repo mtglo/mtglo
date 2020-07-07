@@ -1,5 +1,8 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { FormsModule, NgForm, FormGroup, FormControl, Validators, FormArray } from '@angular/forms'
+import { from, Observable, of, fromEvent, observable } from 'rxjs';
+import { stringify } from 'querystring';
+
 
 @Component({
     selector: 'mtglo-deck-editor',
@@ -11,9 +14,11 @@ export class DeckEditorComponent implements OnInit {
     genders = ['male', 'female'];
     cardForm: FormGroup;
     editions = ['Alpha', 'Beta', 'Unlimited', 'Revised', 'The Dark', 'Legends'];
-    cardsToBeAdded: string[];
+    cardsToBeAdded: [{ cardName: string, quantity: number}];
     forbiddenCards = ['counterspell'];
     card: {cardName: string, quantity: number};
+    newCard: {cardName: string, quantity: number};   
+
 
     constructor() { }
 
@@ -25,7 +30,20 @@ export class DeckEditorComponent implements OnInit {
             'quantity': new FormControl(4, [Validators.required, Validators.min(1), Validators.max(4)]),
             'edition': new FormControl()
         });
+        var button = document.querySelector('addCard');
+        const myobs = of(this.newCard);
+        const myobserver = {
+            next: x => this.cardsToBeAdded.concat(x)
+        }
+        var cardsubscriber = myobs.subscribe(myobserver);
 
+    }
+
+    OnAddCard() {
+        this.newCard.cardName=this.cardForm.value['cardName'];
+        this.newCard.quantity=this.cardForm.value['quantity'];
+
+        this.cardForm.reset();
     }
 
     OnSubmit() {
@@ -38,5 +56,9 @@ export class DeckEditorComponent implements OnInit {
             return {'cardIsForbidden': true};
         }
         return null;
+    }
+    
+    OnDestroy() {
+
     }
 }

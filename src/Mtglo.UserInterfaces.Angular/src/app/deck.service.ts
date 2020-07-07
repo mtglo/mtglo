@@ -28,13 +28,12 @@ export class DeckService {
             { name: 'Green_Dudes', deckList: [{ cardName: 'lightning bolt', quantity: 4 }] }
         ];
 
-        this.decks = from([this.decksDB])
+        this.decks = from([this.decksDB]);
     
     }
 
     private decksDB: Deck[];
     decks: Observable<Deck[]>;
-
 
     GetDeck(deckName: string): Deck {
         return this.decksDB.filter(deck => deck.name === deckName)[0];
@@ -46,7 +45,7 @@ export class DeckService {
 
     SaveDeck(deck)
     {
-        this.http.post<{ name: string }>(
+        this.http.post(
             'https://ng-complete-guide-d3ecb.firebaseio.com/decks.json'
             , deck).subscribe(deck => {
                 console.log(deck)
@@ -55,19 +54,20 @@ export class DeckService {
 
     FetchDeck()
     {
-        this.http.get<{ [key: string]: Deck }>(
+        //TODO: add type to get call
+        this.http.get(
             'https://ng-complete-guide-d3ecb.firebaseio.com/decks.json')
             .pipe(map(responseData => {
-                const postsArray =[];
+                const decksArray =[];
                 for (const key in responseData) {
                     if(responseData.hasOwnProperty(key)) {
-                        postsArray.push({ ...responseData[key], id: key});
+                        decksArray.push({ ...responseData[key], id: key});
                     }
                 }
-                return postsArray
+                return decksArray
             }))
-            .subscribe(decks => {
-              console.log(decks);
+            .subscribe(decksfromDB => {
+              console.log(decksfromDB);
             });
     }
 }

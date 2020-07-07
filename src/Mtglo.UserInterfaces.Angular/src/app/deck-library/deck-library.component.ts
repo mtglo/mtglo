@@ -1,7 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { DeckService, Deck } from '../deck.service';
+import { DeckService, } from '../deck.service';
+import { Deck } from '../deck.model'
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+
 
 @Component({
     selector: 'mtglo-deck-library',
@@ -14,8 +16,10 @@ export class DeckLibraryComponent implements OnInit, OnDestroy {
 
     decks: Deck[];
     decksSubscription: Subscription;
+    deckFromDB : Deck[]
 
     ngOnInit(): void {
+        this.deckService.FetchDeck();
         this.decksSubscription = this.deckService.decks.subscribe(decks => this.decks = decks);
     }
 
