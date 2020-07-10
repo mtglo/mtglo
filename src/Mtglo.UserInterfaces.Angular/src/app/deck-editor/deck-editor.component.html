@@ -3,7 +3,7 @@
         <div>
             <h3>New cards to be added</h3>
             <hr>
-            <li *ngFor="let card of this.cardsToBeAdded">
+            <li *ngFor="let card of this.currentDeck.deckList">
                 {{card.cardName}} x {{card.quantity}}
             </li>
         </div>
@@ -34,10 +34,15 @@
                 Please enter valid options</p>
             <div class="row">
                 <div class="col">
-                        <button class="btn btn-warning" (click)="OnAddCard()" #addCard>Add Card</button>
-                        <button class="btn btn-primary" type="submit">Save</button>
+               
+                        <div>
+                            <button class="btn btn-primary" type="submit">Save</button>
+                        </div>
                 </div>
             </div>
         </form>
+        <div style="padding: 10px;">
+            <button class="btn btn-warning" (click)="OnAddCard()">Add Card</button>
+        </div>
     </div>
 </div>

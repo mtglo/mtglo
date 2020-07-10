@@ -12,14 +12,11 @@ const routes: Routes = [
         path: 'decks',
         component: DeckLibraryComponent,
         children: [
-            {path: ':deckName', component: DeckComponent,
-                children: [
-                    {path: 'editdeck', component: DeckEditorComponent, outlet: 'deckEditorOutlet'}
-                ]
-            }
+            {path: ':deckName', component: DeckComponent },
+            {path: ':deckName/editdeck', component: DeckEditorComponent }
         ]
     },
-    { path: 'collection', component: CardCollectionComponent}
+    { path: 'collection', component: CardCollectionComponent }
 ];
 
 

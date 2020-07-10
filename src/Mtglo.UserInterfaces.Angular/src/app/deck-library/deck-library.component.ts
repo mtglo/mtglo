@@ -3,6 +3,7 @@ import { DeckService, } from '../deck.service';
 import { Deck } from '../deck.model'
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import { DeckLibraryService } from '../deck-library.service';
 
 
 @Component({
@@ -12,20 +13,19 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class DeckLibraryComponent implements OnInit, OnDestroy {
 
-    constructor(private deckService: DeckService) { }
+    constructor(public deckLibraryService: DeckLibraryService, public deckService: DeckService) {
+
+    }
 
     decks: Deck[];
-    decksSubscription: Subscription;
-    deckFromDB : Deck[]
+    deckLibaryServiceSub: Subscription;
 
     ngOnInit(): void {
-        this.deckService.FetchDeck();
-        this.decksSubscription = this.deckService.decks.subscribe(decks => this.decks = decks);
+        this.deckLibaryServiceSub = this.deckLibraryService.FetchDecks().subscribe((decks: Deck[]) => this.decks = decks);
     }
 
     ngOnDestroy() {
-        this.decksSubscription.unsubscribe();
+        this.deckLibaryServiceSub.unsubscribe();
     }
-
 
 }

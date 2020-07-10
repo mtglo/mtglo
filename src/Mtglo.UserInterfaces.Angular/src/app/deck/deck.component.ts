@@ -1,9 +1,11 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { Subscription, of } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
+import { Subscription, of, Observable } from 'rxjs';
+import { switchMap, map, filter } from 'rxjs/operators';
 import { DeckService, Deck } from '../deck.service';
 import { FormControl } from '@angular/forms';
+import { emitWarning } from 'process';
+import { DeckLibraryService } from '../deck-library.service';
 
 @Component({
     selector: 'mtglo-deck',
@@ -12,40 +14,28 @@ import { FormControl } from '@angular/forms';
 })
 export class DeckComponent implements OnInit, OnDestroy {
 
-    
-    constructor(private route: ActivatedRoute, private deckservice: DeckService) {
+
+    constructor(private deckService: DeckService) {
     }
-    
+
     // @Input('deck') deck: { deckName: string, deckList: [{ cardName: string, cardQuantity: number }] };
-    
+
     deck: Deck;
     newCard = '';
     subscription: Subscription;
     editingDeck= false;
     onSavedDeck = function (card: {cardName: string, quantity: number}): void {};
+    deckName: string;
+    currentDeckSub: Subscription;
 
     public isCollapsed = false;
 
     ngOnInit(){
-        this.subscription = this.route.params.pipe(switchMap( (p: Params) => 
-            this.deckservice.decks.pipe(map((decks: Deck[]) => 
-                decks.filter(d => d.name === p['deckName'])[0]))
-        ))
-        .subscribe(deck => {
-            this.deck = deck;
-            console.log(this.route);
-        });
-        this.onSavedDeck = (card: {cardName: string, quantity: number}) => {
-            return this.deckservice.AddCard(this.deck.name, card);
-        };
-        console.log(this.deckservice.FetchDeck());
-
+        this.subscription = this.deckService.currentDeck.subscribe(deck => this.deck = deck);
     }
 
     ngOnDestroy(){
         this.subscription.unsubscribe();
     }
-
-
 
 }

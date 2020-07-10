@@ -5,7 +5,11 @@
     <div class="col sidebar">
         <h1>Deck Library</h1>
         <li *ngFor="let deck of this.decks">
-            <a [routerLink]="['/decks', deck.name]">{{ deck.name }}</a>
+            <a (click)="this.deckService.SelectDeck(deck.name)" [routerLink]="['/decks', deck.name]">{{ deck.name }}</a>
+            <button class="btn btn-warning" (click)="this.deckService.SelectDeck(deck.name)" [routerLink]="['/decks', deck.name,'editdeck']">Edit</button>
         </li>
+        <button class="btn btn-warning" (click)="this.deckLibraryService.FetchDecks()">Fetch Updated Deck Library</button>
+        
+        <button class="btn btn-warning" (click)="this.deckLibraryService.AddDeck()">Add Test Deck</button>
     </div>
 </div>
